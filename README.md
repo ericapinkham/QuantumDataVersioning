@@ -1,7 +1,6 @@
 # QuantumDataVersioning
 
-Preliminaries
-=============
+## Preliminaries
 
 Below is a description of a few relevant objects of quantum
 computation. The ultimate goal of these exercises is to implement
@@ -14,8 +13,7 @@ Work in the language of your choice.  You are encouraged to use an open
 source database binding library, such as SQLAlchemy.
 
 
-Quantum Computing Devices
-=========================
+## Quantum Computing Devices
 
 At the core of Rigetti quantum computers is a superconducting integrated
 circuit.  This circuit contains, among other things one or more quantum
@@ -55,8 +53,7 @@ given an instance of one of the objects.  E.g. given a qubit
 you should be able to get the device the qubit is on and get
 the gates for that qubit.
 
-Versioned Data
-==============
+## Versioned Data
 
 The data about qubits and gates change over time.  Qubit resonances or
 coherence times might be measured more accurately, and gates may be 
@@ -75,6 +72,6 @@ gates at any snapshot in time.
 the interface to your library: you want it to be simple to
 generate updates that trigger new versions.
 
-# REST API
+## REST API
 
 **Goal 4**: Design and implement a simple REST API for the CRUD operations.
