@@ -24,7 +24,7 @@ class Qubit(Versioned, Base):
     __tablename__ = 'qubits'
     id = Column(Integer, primary_key = True)
     device_id = Column(Integer, ForeignKey('devices.id'))
-    gates = relationship('Gate', backref = 'qubit')
+    gates = relationship('Gate', backref = 'qubit', cascade = 'all, save-update')
     resonance_frequency = Column(Float)
     t1 = Column(Float)
     t2 = Column(Float)

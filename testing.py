@@ -27,4 +27,4 @@ test_qubit.resonance_frequency = 100;
 session.commit()
 
 session.delete(test_qubit)
-session.commit
+session.commit()
