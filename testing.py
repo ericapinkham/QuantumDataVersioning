@@ -7,12 +7,14 @@ Base.metadata.create_all(engine)
 session = Session()
 
 # create some new devices
-test_device = Device(id = 0, description = 'testing')
-test_qubit = Qubit(id = 0, device_id = 1, resonance_frequency = 1, t1 = 1, t2 = 1)
+test_device = Device('testing')
+test_qubit = Qubit(test_device, 1, 2, 3)
+test_gates = [Gate(test_qubit, '+X', 1, 2, 4), Gate(test_qubit, '-Y/2', 5, 2, 3)]
 
 # add to database
 session.add(test_device)
 session.add(test_qubit)
+session.add_all(test_gates)
 
 # commit changes
 session.commit()
