@@ -1,9 +1,13 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
-from sqlalchemy.orm import relationship
-from base import Base
-from history_meta import Versioned
 
-class Gate(Versioned, Base):
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy.orm import relationship, configure_mappers
+from base import Base
+from sqlalchemy_continuum import make_versioned
+
+make_versioned(user_cls=None)
+
+class Gate(Base):
+    __versioned__ = {}
     __tablename__ = 'gates'
     id = Column(Integer, primary_key = True)
     qubit_id = Column(Integer, ForeignKey('qubits.id'))
@@ -17,10 +21,12 @@ class Gate(Versioned, Base):
         self.amplitude = amplitude
         self.width = width
         self.phase = phase
+
     def __repr__(self):
         return "<Gate(id='%s', qubit_id='%s', name='%s', amplitude='%s', width='%s', phase='%s')>" % (self.id, self.qubit_id, self.name, self.amplitude, self.width, self.phase)
 
-class Qubit(Versioned, Base):
+class Qubit(Base):
+    __versioned__ = {}
     __tablename__ = 'qubits'
     id = Column(Integer, primary_key = True)
     device_id = Column(Integer, ForeignKey('devices.id'))
@@ -37,6 +43,7 @@ class Qubit(Versioned, Base):
         return "<Qubit(id='%s', device_id='%s', resonance_frequency='%s', t1='%s', t2='%s')>" % (self.id, self.device_id, self.resonance_frequency, self.t1, self.t2)
 
 class Device(Base):
+    __versioned__ = {}
     __tablename__ = 'devices'
     id = Column(Integer, primary_key = True)
     description = Column(String(32))
@@ -45,3 +52,5 @@ class Device(Base):
         self.description = description
     def __repr__(self):
         return "<Device(id='%s', description='%s')>" % (self.id, self.description)
+
+configure_mappers()
