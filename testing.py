@@ -1,6 +1,10 @@
 #!/usr/bin/python3
-from base import Base, engine, Session
+from crud.base import Base, engine, Session
 from crud.models import Gate, Device, Qubit
+from sqlalchemy import Table
+from sqlalchemy.schema import MetaData
+from sqlalchemy_continuum import version_class
+
 
 # Setup a new session
 Base.metadata.create_all(engine)
@@ -28,6 +32,30 @@ session.commit()
 test_qubit.resonance_frequency = 100
 
 session.commit()
+
+
+session.query(Qubit).filter_by(id=1).update({'t1': 1000})
+
+session.commit()
+
+
+
+res = session.query(Gate).filter(Gate.id == 1).all()
+
+QubitVersion = version_class(Qubit)
+
+res = session.query(Qubit).filter_by(id=3).all()[0]
+# make_transient(res)
+
+print(res.device)
+print(res)
+print(res.gates)
+#
+# print(Table(Gate.__tablename__, metadata))
+
+print(engine)
+
+
 #
 # session.delete(test_qubit2)
 # session.commit()

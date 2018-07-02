@@ -1,8 +1,7 @@
-
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship, configure_mappers
-from base import Base
 from sqlalchemy_continuum import make_versioned
+from crud.base import Base
 
 # enable versioning
 make_versioned(user_cls=None)
@@ -26,7 +25,7 @@ class Gate(Base):
         self.phase = phase
 
     def __repr__(self):
-        return "<Gate(id='%s', qubit_id='%s', name='%s', amplitude='%s', width='%s', phase='%s')>" \
+        return "<Gate(id=%s, qubit_id=%s, name='%s', amplitude=%s, width=%s, phase=%s)>" \
             % (self.id, self.qubit_id, self.name, self.amplitude, self.width, self.phase)
 
 
@@ -47,7 +46,7 @@ class Qubit(Base):
         self.t2 = t2
 
     def __repr__(self):
-        return "<Qubit(id='%s', device_id='%s', resonance_frequency='%s', t1='%s', t2='%s')>" \
+        return "<Qubit(id=%s, device_id=%s, resonance_frequency=%s, t1=%s, t2=%s)>" \
             % (self.id, self.device_id, self.resonance_frequency, self.t1, self.t2)
 
 
@@ -62,7 +61,7 @@ class Device(Base):
         self.description = description
 
     def __repr__(self):
-        return "<Device(id='%s', description='%s')>" % (self.id, self.description)
+        return "<Device(id=%s, description='%s')>" % (self.id, self.description)
 
 
 # more versioning stuff
