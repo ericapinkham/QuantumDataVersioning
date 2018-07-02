@@ -120,3 +120,5 @@ To examine the state of a device `@device_id` along with its qubits and gates at
 			AND @transaction_id = COALESCE(q.end_transaction_id, @transaction_id)
 			AND @transaction_id = COALESCE(g.end_transaction_id, @transaction_id)
 	;
+
+An interface for this type of query has been implemented through `readHistorical` which takes an integer `device_id` and a `datetime.datetime` object and returns a list of tuples representing the state of a device, all of its qubits, and all of their gates at the provided time.
