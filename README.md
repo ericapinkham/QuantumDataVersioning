@@ -107,7 +107,7 @@ To examine the state of a device along with its qubits and gates at given time `
 
 	SELECT @transaction_id := id
 		FROM transaction
-		WHERE issued_at <= '2018-07-02 01:14:46'
+		WHERE issued_at <= @timestamp
 		ORDER BY issued_at DESC
 		LIMIT 1
 	;
