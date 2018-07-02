@@ -103,7 +103,7 @@ Every device stores references to its qubits in the member variable `qubits`. Li
 ### Versioning
 Versioning is handled by `sqlalchemy-continuum`. This library extends the object mappers in `sqlalchemy` by triggering an `INSERT` into auxiliary tables every time an `INSERT`, `UPDATE` or `DELETE` statement is committed on one of the versioned objects. The fields in the auxiliary table match those of the table being updated, but contain additional fields `transaction_id` and `transaction_end` (along with a few others). These fields are foreign key to another auxiliary table `transactions` which stores the timestamps of the transaction.
 
-To examine the state of a device along with its qubits and gates at given time `@timestamp`, the following query could be executed:
+To examine the state of a device `@device_id` along with its qubits and gates at given time `@timestamp`, the following query could be executed:
 
 	SELECT @transaction_id := id
 		FROM transaction
@@ -114,9 +114,9 @@ To examine the state of a device along with its qubits and gates at given time `
 
 	SELECT *
 		FROM qubits_version q
-	    INNER JOIN gates_version g
+		INNER JOIN gates_version g
 			ON q.id = g.qubit_id
-		WHERE q.device_id = 21
-			AND @transaction_id BETWEEN q.transaction_id AND COALESCE(q.end_transaction_id, @transaction_id)
-			AND @transaction_id BETWEEN g.transaction_id AND COALESCE(g.end_transaction_id, @transaction_id)
+		WHERE q.device_id = @transaction_id
+			AND @transaction_id = COALESCE(q.end_transaction_id, @transaction_id)
+			AND @transaction_id = COALESCE(g.end_transaction_id, @transaction_id)
 	;

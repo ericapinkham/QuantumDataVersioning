@@ -2,6 +2,7 @@
 
 import unittest
 from crud.quantum import Quantum
+from datetime import datetime
 
 
 class TestQuantumCrud(unittest.TestCase):
@@ -14,13 +15,13 @@ class TestQuantumCrud(unittest.TestCase):
     def test_create_qubit(self):
         q = Quantum()
         device0 = q.createDevice('unittest create qubit')
-        qubit0 = q.createQubit(device0, 1, 2, 3)
+        qubit0 = q.createQubit(device0, 1, datetime(2018, 7, 2), datetime(2018, 7, 3))
         self.assertEqual(qubit0.id, q.readQubit(id=qubit0.id).id)
 
     def test_create_gate(self):
         q = Quantum()
         device0 = q.createDevice('unittest create gate')
-        qubit0 = q.createQubit(device0, 1, 2, 3)
+        qubit0 = q.createQubit(device0, 1, datetime(2018, 7, 2), datetime(2018, 7, 3))
         gate0 = q.createGate(qubit0, '-Y/2', 100, 100, 100)
         self.assertEqual('-Y/2', q.readGate(id=gate0.id).name)
 
@@ -33,14 +34,14 @@ class TestQuantumCrud(unittest.TestCase):
     def test_update_qubit(self):
         q = Quantum()
         device0 = q.createDevice('unittest update qubit')
-        qubit0 = q.createQubit(device0, 10000, 2, 3)
+        qubit0 = q.createQubit(device0, 10000, datetime(2018, 7, 2), datetime(2018, 7, 3))
         q.updateQubit(qubit0.id, **{'resonance_frequency': 100})
         self.assertEqual(100, q.readQubit(id=qubit0.id).resonance_frequency)
 
     def test_update_gate(self):
         q = Quantum()
         device0 = q.createDevice('unittest update gate')
-        qubit0 = q.createQubit(device0, 10000, 2, 3)
+        qubit0 = q.createQubit(device0, 10000, datetime(2018, 7, 2), datetime(2018, 7, 3))
         gate0 = q.createGate(qubit0, '-Y/2', 100, 100, 100)
         q.updateGate(gate0.id, **{'name': 'X'})
         self.assertEqual('X', q.readGate(id=gate0.id).name)
@@ -48,7 +49,7 @@ class TestQuantumCrud(unittest.TestCase):
     def test_delete(self):
         q = Quantum()
         device0 = q.createDevice('unittest create gate')
-        qubit0 = q.createQubit(device0, 1, 2, 3)
+        qubit0 = q.createQubit(device0, 1, datetime(2018, 7, 2), datetime(2018, 7, 3))
         gate0 = q.createGate(qubit0, '-Y/2', 100, 100, 100)
 
         device1 = q.readDevice(device0.id)
@@ -71,7 +72,7 @@ class TestQuantumCrud(unittest.TestCase):
     def test_relationship_navigation_1(self):
         q = Quantum()
         device0 = q.createDevice('unittest dependency device')
-        qubit0 = q.createQubit(device0, 1, 2, 3)
+        qubit0 = q.createQubit(device0, 1, datetime(2018, 7, 2), datetime(2018, 7, 3))
         gate0 = q.createGate(qubit0, '-Y/2', 100, 100, 100)
 
         # down
@@ -85,8 +86,8 @@ class TestQuantumCrud(unittest.TestCase):
     def test_relationship_navigation_2(self):
         q = Quantum()
         device0 = q.createDevice('unittest dependency device')
-        qubit0 = q.createQubit(device0, 1, 2, 3)
-        gate0 = q.createGate(qubit0, '-Y/2', 100, 100, 100)
+        qubit0 = q.createQubit(device0, 1, datetime(2018, 7, 2), datetime(2018, 7, 3))
+        q.createGate(qubit0, '-Y/2', 100, 100, 100)
 
         # pull from db first
         device1 = q.readDevice(device0.id)

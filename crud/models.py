@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Time
 from sqlalchemy.orm import relationship, configure_mappers
 from sqlalchemy_continuum import make_versioned
 from crud.base import Base
@@ -36,8 +36,8 @@ class Qubit(Base):
     device_id = Column(Integer, ForeignKey('devices.id'))
     gates = relationship('Gate', backref='qubit', cascade='all, save-update')
     resonance_frequency = Column(Float)
-    t1 = Column(Float)
-    t2 = Column(Float)
+    t1 = Column(Time)
+    t2 = Column(Time)
 
     def __init__(self, device, resonance_frequency, t1, t2):
         self.device = device

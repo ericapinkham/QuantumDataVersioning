@@ -1,10 +1,11 @@
-from crud.base import Session
+from crud.base import Session, Base, engine
 from crud.models import Device, Qubit, Gate
 
 
 class Quantum:
     def __init__(self):
         self.session = Session()
+        Base.metadata.create_all(engine)
 
     # Create Methods
     def create(self, className):
