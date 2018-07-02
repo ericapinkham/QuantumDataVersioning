@@ -1,11 +1,19 @@
-from crud.base import Session, Base, engine
-from crud.models import Device, Qubit, Gate
+from crud.models import Base, Device, Qubit, Gate
+from sqlalchemy import create_engine
 from sqlalchemy.sql import text
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy_continuum import transaction_class
 
 
 class Quantum:
-    def __init__(self):
+    def __init__(self, connectionString):
+        if connectionString:
+            self.connect(connectionString)
+
+    # connect to the database
+    def connect(self, connectionString):
+        engine = create_engine(connectionString)
+        Session = sessionmaker(bind=engine, autoflush=True)
         self.session = Session()
         Base.metadata.create_all(engine)
 

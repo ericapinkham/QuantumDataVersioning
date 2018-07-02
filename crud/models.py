@@ -1,11 +1,13 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.dialects.mysql import DATETIME
 from sqlalchemy.orm import relationship, configure_mappers
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy_continuum import make_versioned
-from crud.base import Base
+# from crud.base import Base
 
 # enable versioning
 make_versioned(user_cls=None)
+Base = declarative_base()
 
 
 class Gate(Base):
