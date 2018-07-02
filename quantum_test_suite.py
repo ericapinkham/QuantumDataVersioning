@@ -95,6 +95,13 @@ class TestQuantumCrud(unittest.TestCase):
         # down and back up
         self.assertEqual(device1.qubits[0].gates[0].qubit.device.id, device1.id)
 
+    def test_datetime(self):
+        q = Quantum()
+        device0 = q.createDevice('unittest create gate')
+        qubit0 = q.createQubit(device0, 1, datetime(2018, 7, 2), datetime(2018, 7, 3))
+        qubit1 = q.readQubit(qubit0.id)
+        self.assertEqual(qubit0.t1, qubit1.t1)
+        self.assertIsInstance(qubit1.t1, datetime)
 
 if __name__ == '__main__':
     unittest.main()
