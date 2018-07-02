@@ -94,7 +94,6 @@ class TestQuantumCrud(unittest.TestCase):
         # down and back up
         self.assertEqual(device1.qubits[0].gates[0].qubit.device.id, device1.id)
 
-    
 
 if __name__ == '__main__':
     unittest.main()
