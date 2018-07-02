@@ -124,6 +124,5 @@ class TestQuantumCrud(unittest.TestCase):
         self.assertEqual(expected, q.readHistorical(device0.id, datetime(2018, 7, 4)))
 
 
-
 if __name__ == '__main__':
     unittest.main()

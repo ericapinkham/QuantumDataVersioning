@@ -3,6 +3,7 @@ from crud.models import Device, Qubit, Gate
 from sqlalchemy.sql import text
 from sqlalchemy_continuum import transaction_class
 
+
 class Quantum:
     def __init__(self):
         self.session = Session()
