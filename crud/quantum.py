@@ -1,4 +1,4 @@
-from crud.base import Base, engine, Session
+from crud.base import Session
 from crud.models import Device, Qubit, Gate
 
 
