@@ -1,6 +1,7 @@
 from crud.base import Session, Base, engine
 from crud.models import Device, Qubit, Gate
-
+from sqlalchemy.sql import text
+from sqlalchemy_continuum import transaction_class
 
 class Quantum:
     def __init__(self):
@@ -66,3 +67,43 @@ class Quantum:
 
     def deleteGate(self, id):
         self.delete(Gate, id)
+
+    # read historical state
+    def readHistorical(self, deviceId, timestamp):
+        # transaction class
+        Transaction = transaction_class(Qubit)
+
+        # fetch the appropriate transaction
+        transactionID = self.session.query(Transaction) \
+            .filter(Transaction.issued_at <= timestamp) \
+            .order_by(Transaction.issued_at.desc()) \
+            .limit(1) \
+            .from_self() \
+            .all()[0].id
+
+        # construct statement to query historical data
+        statement = text("""
+        SELECT  d.id AS device_id,
+                d.description,
+                q.id AS qubit_id,
+                q.resonance_frequency,
+                q.t1,
+                q.t2,
+                g.id AS gate_id,
+                g.name,
+                g.amplitude,
+                g.width,
+                g.phase
+            FROM devices_version d
+            LEFT JOIN qubits_version q
+                ON d.id = q.device_id
+            LEFT JOIN gates_version g
+                ON q.id = g.qubit_id
+            WHERE d.id = {0}
+                AND {1} = COALESCE(d.end_transaction_id, {1})
+                AND {1} = COALESCE(q.end_transaction_id, {1})
+                AND {1} = COALESCE(g.end_transaction_id, {1})
+        ;""".format(deviceId, transactionID))
+
+        # return a list of the tuples in the query
+        return [row for row in self.session.execute(statement)]

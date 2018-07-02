@@ -103,5 +103,27 @@ class TestQuantumCrud(unittest.TestCase):
         self.assertEqual(qubit0.t1, qubit1.t1)
         self.assertIsInstance(qubit1.t1, datetime)
 
+    def test_historical(self):
+        q = Quantum()
+        device0 = q.createDevice('unittest historical')
+        qubit0 = q.createQubit(device0, 1, datetime(2018, 7, 2), datetime(2018, 7, 3))
+        gate0 = q.createGate(qubit0, '-Y/2', 100, 100, 100)
+        expected = [(
+            device0.id,
+            'unittest historical',
+            qubit0.id,
+            1.0,
+            datetime(2018, 7, 2, 0, 0),
+            datetime(2018, 7, 3, 0, 0),
+            gate0.id,
+            '-Y/2',
+            100.0,
+            100.0,
+            100.0
+            )]
+        self.assertEqual(expected, q.readHistorical(device0.id, datetime(2018, 7, 4)))
+
+
+
 if __name__ == '__main__':
     unittest.main()
